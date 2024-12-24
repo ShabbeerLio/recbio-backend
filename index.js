@@ -13,7 +13,7 @@ app.use(express.json());
 // app.use(express.static(__dirname));
 
 // Available routes
-// app.use('/api/auth', require('./routes/auth'));
+app.use('/api/auth', require('./routes/auth'));
 // app.use('/api/admin', require('./routes/admin'));
 
 app.get('/', (req, res) => {
