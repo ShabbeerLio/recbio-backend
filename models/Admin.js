@@ -70,23 +70,8 @@ const ItemSchema = new mongoose.Schema({
 })
 
 const PurchaseItemSchema = new mongoose.Schema({
-    item: {
+    name: {
         type: String,
-    },
-    quantity: {
-        type: Number,
-    },
-    tax: {
-        type: Number,
-    },
-    mfg: {
-        type: Number,
-    },
-    exp: {
-        type: Number
-    },
-    amount: {
-        type: Number,
     },
 })
 
