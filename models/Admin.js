@@ -12,11 +12,11 @@ const PaymentItemSchema = new mongoose.Schema({
     invoice_amount: {
         type: Number,
     },
-    amount_due: {
+    paid: {
         type: Number,
     },
-    payment: {
-        type: String,
+    due: {
+        type: Number,
     },
 })
 
@@ -25,18 +25,24 @@ const PaymentSchema = new mongoose.Schema({
         type: String,
     },
     name: {
-        type: Number,
+        type: String,
     },
     invoice_number: {
+        type: Number,
+    },
+    invoise: [PaymentItemSchema],
+    payment_type: {
+        type: String,
+    },
+    amount_received: {
+        type: Number,
+    },
+    amount: {
         type: Number,
     },
     note: {
         type: String,
     },
-    amount: {
-        type: String,
-    },
-    item:[PaymentItemSchema],
 })
 
 const ItemSchema = new mongoose.Schema({
@@ -58,13 +64,13 @@ const ItemSchema = new mongoose.Schema({
     cost_price: {
         type: Number,
     },
-    description:{
+    description: {
         type: String,
     },
-    mfr_name:{
+    mfr_name: {
         type: String,
     },
-    gst:{
+    gst: {
         type: String,
     }
 })
@@ -72,6 +78,24 @@ const ItemSchema = new mongoose.Schema({
 const PurchaseItemSchema = new mongoose.Schema({
     name: {
         type: String,
+    },
+    quantity: {
+        type: Number,
+    },
+    rate: {
+        type: Number,
+    },
+    tax: {
+        type: Number,
+    },
+    mfg: {
+        type: Number,
+    },
+    exp: {
+        type: Number,
+    },
+    amount: {
+        typr: Number,
     },
 })
 
@@ -101,10 +125,16 @@ const SalesSchema = new mongoose.Schema({
         type: String,
     },
     item: [PurchaseItemSchema],
-    note:{
+    discount: {
+        type: Number,
+    },
+    total: {
+        type: Number,
+    },
+    note: {
         type: String,
     },
-    terms:{
+    terms: {
         type: String,
     }
 })
@@ -129,10 +159,10 @@ const PurchaseSchema = new mongoose.Schema({
         type: String,
     },
     item: [PurchaseItemSchema],
-    note:{
+    note: {
         type: String,
     },
-    recipt:{
+    recipt: {
         type: String,
     }
 })
@@ -264,8 +294,8 @@ const AdminSchema = new Schema({
     vandor: [CustomerSchema],
     purchase_entry: [PurchaseSchema],
     sales_entry: [SalesSchema],
-    items:[ItemSchema],
-    payment:[PaymentSchema],
+    items: [ItemSchema],
+    payment: [PaymentSchema],
 })
 
 module.exports = mongoose.model('admin', AdminSchema);

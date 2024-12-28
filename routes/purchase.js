@@ -16,7 +16,6 @@ router.get('/:adminId/getpurchaseentries', async (req, res) => {
     }
 });
 
-// Route to add a purchase entry
 router.post('/:adminId/addpurchaseentry', async (req, res) => {
     try {
         const admin = await Admin.findById(req.params.adminId);
@@ -25,23 +24,8 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, bill_date, due_date, payment_type, item, note, recipt
+            name, bill, order_number, bill_date, due_date, payment_type, items,discount,total, note, recipt
         } = req.body;
-
-        // Find the items in the Admin's item list by their IDs
-        const selectedItems = admin.items.filter(adminItem => 
-            item.some(reqItemId => reqItemId === adminItem._id.toString())
-        );
-
-        if (selectedItems.length === 0) {
-            return res.status(404).json({ error: "No matching items found" });
-        }
-
-        // Map the selected items to include only `_id` and `name`
-        const itemsToStore = selectedItems.map(selectedItem => ({
-            _id: selectedItem._id,
-            name: selectedItem.name,
-        }));
 
         const newPurchaseEntry = {
             name,
@@ -50,7 +34,17 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
             bill_date,
             due_date,
             payment_type,
-            item: itemsToStore,
+            item: items.map(({ name, quantity, rate, tax, mfg, exp, amount }) => ({
+                name,
+                quantity,
+                rate,
+                tax,
+                mfg,
+                exp,
+                amount
+            })),
+            discount,
+            total,
             note,
             recipt,
         };
@@ -73,49 +67,43 @@ router.put('/:adminId/editpurchaseentry/:purchaseEntryId', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const {
-            name, bill, order_number, bill_date, due_date, payment_type, item, note, recipt
-        } = req.body;
-
-        // Find the purchase entry by its ID
         const purchaseEntry = admin.purchase_entry.find(entry => entry._id.toString() === req.params.purchaseEntryId);
-
         if (!purchaseEntry) {
             return res.status(404).json({ error: "Purchase entry not found" });
         }
 
-        // Find the items in the Admin's item list by their IDs
-        const selectedItems = admin.items.filter(adminItem => 
-            item.some(reqItemId => reqItemId === adminItem._id.toString())
-        );
+        const {
+            name, bill, order_number, bill_date, due_date, payment_type, items,discount,total, note, recipt
+        } = req.body;
 
-        if (selectedItems.length === 0) {
-            return res.status(404).json({ error: "No matching items found" });
-        }
-
-        // Map the selected items to include only `_id` and `name`
-        const itemsToStore = selectedItems.map(selectedItem => ({
-            _id: selectedItem._id,
-            name: selectedItem.name,
-        }));
-
-        // Update the purchase entry fields if provided
+        // Update the purchase entry
         purchaseEntry.name = name || purchaseEntry.name;
         purchaseEntry.bill = bill || purchaseEntry.bill;
         purchaseEntry.order_number = order_number || purchaseEntry.order_number;
         purchaseEntry.bill_date = bill_date || purchaseEntry.bill_date;
         purchaseEntry.due_date = due_date || purchaseEntry.due_date;
         purchaseEntry.payment_type = payment_type || purchaseEntry.payment_type;
-        purchaseEntry.item = itemsToStore; // Store only `id` and `name` of each item
+        purchaseEntry.discount = payment_type || purchaseEntry.discount;
+        purchaseEntry.total = payment_type || purchaseEntry.total;
         purchaseEntry.note = note || purchaseEntry.note;
         purchaseEntry.recipt = recipt || purchaseEntry.recipt;
 
-        // Save the updated admin document
-        await admin.save();
+        if (items) {
+            purchaseEntry.item = items.map(({ name, quantity, rate, tax, mfg, exp, amount }) => ({
+                name,
+                quantity,
+                rate,
+                tax,
+                mfg,
+                exp,
+                amount
+            }));
+        }
 
+        await admin.save();
         res.json({ message: "Purchase entry updated successfully", purchaseEntry });
     } catch (error) {
-        console.error("Error updating purchase entry:", error);
+        console.error("Error editing purchase entry:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
