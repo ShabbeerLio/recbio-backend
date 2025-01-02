@@ -56,7 +56,7 @@ router.put('/:clientId/editcustomer/:customerId', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const { type, name, displayName, companyName, email, phone, mobile, address, remark } = req.body;
+        const { type, name, displayName, companyName, email, phone, mobile,other, address, remark } = req.body;
 
         const customer = client.customer.find(cust => cust._id.toString() === req.params.customerId);
         if (!customer) {
@@ -71,6 +71,7 @@ router.put('/:clientId/editcustomer/:customerId', async (req, res) => {
         customer.email = email || customer.email;
         customer.phone = phone || customer.phone;
         customer.mobile = mobile || customer.mobile;
+        customer.other = other || customer.other;
         customer.address = address || customer.address;
         customer.remark = remark || customer.remark;
 

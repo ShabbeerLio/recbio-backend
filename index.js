@@ -21,6 +21,7 @@ app.use('/api/admin', require('./routes/purchase'));
 app.use('/api/admin', require('./routes/sales'));
 app.use('/api/admin', require('./routes/item'));
 app.use('/api/admin', require('./routes/payment'));
+app.use('/api/admin', require('./routes/organisation'));
 
 app.get('/', (req, res) => {
     res.json({ message: 'Hello MERN Stack!' });

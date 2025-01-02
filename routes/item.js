@@ -24,14 +24,13 @@ router.post('/:adminId/additem', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const { name, unit, tax, hsn, selling_price, cost_price, description, mfr_name, gst } = req.body;
+        const { name, unit, tax, selling_price, cost_price, description, mfr_name, gst } = req.body;
 
         // Create new item
         const newItem = {
             name,
             unit,
             tax,
-            hsn,
             selling_price,
             cost_price,
             description,
@@ -57,7 +56,7 @@ router.put('/:adminId/edititem/:itemId', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const { name, unit, tax, hsn, selling_price, cost_price, description, mfr_name, gst } = req.body;
+        const { name, unit, tax, selling_price, cost_price, description, mfr_name, gst } = req.body;
 
         const item = admin.items.find((i) => i._id.toString() === req.params.itemId);
         if (!item) {
@@ -68,7 +67,6 @@ router.put('/:adminId/edititem/:itemId', async (req, res) => {
         item.name = name || item.name;
         item.unit = unit || item.unit;
         item.tax = typeof tax === 'boolean' ? tax : item.tax;
-        item.hsn = hsn || item.hsn;
         item.selling_price = selling_price || item.selling_price;
         item.cost_price = cost_price || item.cost_price;
         item.description = description || item.description;

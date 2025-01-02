@@ -24,7 +24,7 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, bill_date, due_date, payment_type, items,discount,total, note, recipt
+            name, bill, order_number, bill_date, due_date, hsn, batch, payment_type, invoice_number,items, discount, total, note, recipt
         } = req.body;
 
         const newPurchaseEntry = {
@@ -33,7 +33,10 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
             order_number,
             bill_date,
             due_date,
+            hsn,
+            batch,
             payment_type,
+            invoice_number,
             item: items.map(({ name, quantity, rate, tax, mfg, exp, amount }) => ({
                 name,
                 quantity,
@@ -73,7 +76,7 @@ router.put('/:adminId/editpurchaseentry/:purchaseEntryId', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, bill_date, due_date, payment_type, items,discount,total, note, recipt
+            name, bill, order_number, bill_date, due_date, hsn, batch,invoice_number, payment_type, items, discount, total, note, recipt
         } = req.body;
 
         // Update the purchase entry
@@ -82,9 +85,12 @@ router.put('/:adminId/editpurchaseentry/:purchaseEntryId', async (req, res) => {
         purchaseEntry.order_number = order_number || purchaseEntry.order_number;
         purchaseEntry.bill_date = bill_date || purchaseEntry.bill_date;
         purchaseEntry.due_date = due_date || purchaseEntry.due_date;
+        purchaseEntry.hsn = hsn || purchaseEntry.hsn;
+        purchaseEntry.batch = batch || purchaseEntry.batch;
+        purchaseEntry.invoice_number = invoice_number || purchaseEntry.invoice_number;
         purchaseEntry.payment_type = payment_type || purchaseEntry.payment_type;
-        purchaseEntry.discount = payment_type || purchaseEntry.discount;
-        purchaseEntry.total = payment_type || purchaseEntry.total;
+        purchaseEntry.discount = discount || purchaseEntry.discount;
+        purchaseEntry.total = total || purchaseEntry.total;
         purchaseEntry.note = note || purchaseEntry.note;
         purchaseEntry.recipt = recipt || purchaseEntry.recipt;
 

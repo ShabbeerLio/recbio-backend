@@ -2,6 +2,33 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 
+const organisationSchema = new mongoose.Schema({
+    name: {
+        type: String,
+    },
+    gst: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
+    state: {
+        type: String,
+    },
+    street1: {
+        type: String,
+    },
+    street2: {
+        type: String,
+    },
+    city: {
+        type: String,
+    },
+    zip_code: {
+        type: String,
+    },
+})
+
 const PaymentItemSchema = new mongoose.Schema({
     date: {
         type: String,
@@ -50,13 +77,10 @@ const ItemSchema = new mongoose.Schema({
         type: String,
     },
     unit: {
-        type: Number,
+        type: String,
     },
     tax: {
         type: Boolean,
-    },
-    hsn: {
-        type: Number,
     },
     selling_price: {
         type: Number,
@@ -149,6 +173,9 @@ const PurchaseSchema = new mongoose.Schema({
     order_number: {
         type: Number,
     },
+    invoice_number: {
+        type: Number,
+    },
     bill_date: {
         type: Number,
     },
@@ -156,6 +183,12 @@ const PurchaseSchema = new mongoose.Schema({
         type: Number
     },
     payment_type: {
+        type: String,
+    },
+    hsn: {
+        type: String,
+    },
+    batch: {
         type: String,
     },
     item: [PurchaseItemSchema],
@@ -192,7 +225,7 @@ const ShippingSchema = new mongoose.Schema({
     phone: {
         type: Number,
     },
-    FAX: {
+    fax: {
         type: Number,
     },
 })
@@ -222,7 +255,7 @@ const BillingSchema = new mongoose.Schema({
     phone: {
         type: Number,
     },
-    FAX: {
+    fax: {
         type: Number,
     },
 })
@@ -246,7 +279,7 @@ const OtherSchema = new mongoose.Schema({
     pan: {
         type: String,
     },
-    GST: {
+    gst: {
         type: String,
     },
 });
@@ -296,6 +329,7 @@ const AdminSchema = new Schema({
     sales_entry: [SalesSchema],
     items: [ItemSchema],
     payment: [PaymentSchema],
+    organisation:[organisationSchema],
 })
 
 module.exports = mongoose.model('admin', AdminSchema);
