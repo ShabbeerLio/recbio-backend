@@ -113,10 +113,10 @@ const PurchaseItemSchema = new mongoose.Schema({
         type: Number,
     },
     mfg: {
-        type: Number,
+        type: String,
     },
     exp: {
-        type: Number,
+        type: String,
     },
     amount: {
         typr: Number,
@@ -140,10 +140,10 @@ const SalesSchema = new mongoose.Schema({
         type: String,
     },
     bill_date: {
-        type: Number,
+        type: String,
     },
     due_date: {
-        type: Number
+        type: String
     },
     payment_type: {
         type: String,
@@ -177,10 +177,10 @@ const PurchaseSchema = new mongoose.Schema({
         type: Number,
     },
     bill_date: {
-        type: Number,
+        type: String,
     },
     due_date: {
-        type: Number
+        type: String
     },
     payment_type: {
         type: String,
@@ -192,6 +192,12 @@ const PurchaseSchema = new mongoose.Schema({
         type: String,
     },
     item: [PurchaseItemSchema],
+    discount: {
+        type: Number,
+    },
+    total: {
+        type: Number,
+    },
     note: {
         type: String,
     },
