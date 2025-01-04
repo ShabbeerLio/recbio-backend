@@ -134,7 +134,7 @@ const SalesSchema = new mongoose.Schema({
         type: Number,
     },
     invoice_number: {
-        type: Number,
+        type: String,
     },
     salesperson: {
         type: String,
@@ -174,7 +174,7 @@ const PurchaseSchema = new mongoose.Schema({
         type: Number,
     },
     invoice_number: {
-        type: Number,
+        type: String,
     },
     bill_date: {
         type: String,
