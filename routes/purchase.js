@@ -37,14 +37,14 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
             batch,
             payment_type,
             invoice_number,
-            item: items.map(({ name, quantity, rate, tax, mfg, exp, amount }) => ({
+            item: items.map(({ name, quantity, rate, tax, mfg, exp, price }) => ({
                 name,
                 quantity,
                 rate,
                 tax,
                 mfg,
                 exp,
-                amount
+                price
             })),
             discount,
             total,

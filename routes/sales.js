@@ -37,12 +37,12 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
             bill_date,
             due_date,
             payment_type,
-            item: items.map(({ name, quantity, rate, tax, amount }) => ({
+            item: items.map(({ name, quantity, rate, tax, price }) => ({
                 name,
                 quantity,
                 rate,
                 tax,
-                amount
+                price
             })),
             discount,
             total,

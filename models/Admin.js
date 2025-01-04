@@ -118,8 +118,8 @@ const PurchaseItemSchema = new mongoose.Schema({
     exp: {
         type: String,
     },
-    amount: {
-        typr: Number,
+    price: {
+        type: Number,
     },
 })
 
