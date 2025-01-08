@@ -37,13 +37,13 @@ const PaymentItemSchema = new mongoose.Schema({
         type: Number,
     },
     invoice_amount: {
-        type: Number,
+        type: String,
     },
     paid: {
-        type: Number,
+        type: String,
     },
     due: {
-        type: Number,
+        type: String,
     },
 })
 
@@ -55,17 +55,17 @@ const PaymentSchema = new mongoose.Schema({
         type: String,
     },
     invoice_number: {
-        type: Number,
+        type: String,
     },
     invoise: [PaymentItemSchema],
     payment_type: {
         type: String,
     },
     amount_received: {
-        type: Number,
+        type: String,
     },
     amount: {
-        type: Number,
+        type: String,
     },
     note: {
         type: String,
