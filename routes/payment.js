@@ -24,7 +24,7 @@ router.post('/:adminId/addpayment', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const { type, name, invoice_number, invoise, payment_type, amount_received, amount, note } = req.body;
+        const { type, name, invoice_number, invoise, payment_type, amount_received, amount,transaction, note } = req.body;
 
         const newPayment = {
             type,
@@ -34,6 +34,7 @@ router.post('/:adminId/addpayment', async (req, res) => {
             payment_type,
             amount_received,
             amount,
+            transaction,
             note,
         };
 
@@ -60,7 +61,7 @@ router.put('/:adminId/editpayment/:paymentId', async (req, res) => {
             return res.status(404).json({ error: "Payment not found" });
         }
 
-        const { type, name, invoice_number, invoise, payment_type, amount_received, amount, note } = req.body;
+        const { type, name, invoice_number, invoise, payment_type, amount_received, amount,transaction, note } = req.body;
 
         // Update fields if provided
         if (type !== undefined) payment.type = type;
@@ -70,6 +71,7 @@ router.put('/:adminId/editpayment/:paymentId', async (req, res) => {
         if (amount_received !== undefined) payment.amount_received = amount_received;
         if (invoise !== undefined) payment.invoise = invoise;
         if (note !== undefined) payment.note = note;
+        if (transaction !== undefined) payment.transaction = transaction;
         if (amount !== undefined) payment.amount = amount;
 
         await admin.save();

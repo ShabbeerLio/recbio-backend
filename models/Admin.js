@@ -67,6 +67,9 @@ const PaymentSchema = new mongoose.Schema({
     amount: {
         type: Number,
     },
+    transaction: {
+        type: Number,
+    },
     note: {
         type: String,
     },
@@ -335,7 +338,7 @@ const AdminSchema = new Schema({
     sales_entry: [SalesSchema],
     items: [ItemSchema],
     payment: [PaymentSchema],
-    organisation:[organisationSchema],
+    organisation: [organisationSchema],
 })
 
 module.exports = mongoose.model('admin', AdminSchema);
