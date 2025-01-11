@@ -64,6 +64,9 @@ const PaymentSchema = new mongoose.Schema({
     amount_received: {
         type: Number,
     },
+    total: {
+        type: Number,
+    },
     amount: {
         type: Number,
     },
