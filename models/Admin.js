@@ -76,6 +76,10 @@ const PaymentSchema = new mongoose.Schema({
     note: {
         type: String,
     },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 const ItemSchema = new mongoose.Schema({
@@ -102,7 +106,11 @@ const ItemSchema = new mongoose.Schema({
     },
     gst: {
         type: String,
-    }
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 const PurchaseItemSchema = new mongoose.Schema({
@@ -209,7 +217,11 @@ const PurchaseSchema = new mongoose.Schema({
     },
     recipt: {
         type: String,
-    }
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    },
 })
 
 const ShippingSchema = new mongoose.Schema({
@@ -320,7 +332,11 @@ const CustomerSchema = new mongoose.Schema({
     },
     other: [OtherSchema],
     address: [AddressSchema],
-    remark: [RemarkSchema,]
+    remark: [RemarkSchema,],
+    date: {
+        type: Date,
+        default: Date.now
+    },
 });
 
 const AdminSchema = new Schema({
