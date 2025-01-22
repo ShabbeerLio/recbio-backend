@@ -89,6 +89,9 @@ const ItemSchema = new mongoose.Schema({
     unit: {
         type: String,
     },
+    quantity: {
+        type: Number,
+    },
     tax: {
         type: Boolean,
     },
@@ -105,6 +108,12 @@ const ItemSchema = new mongoose.Schema({
         type: String,
     },
     gst: {
+        type: String,
+    },
+    hsn: {
+        type: String,
+    },
+    batch: {
         type: String,
     },
     date: {
@@ -199,12 +208,6 @@ const PurchaseSchema = new mongoose.Schema({
     payment_type: {
         type: String,
     },
-    hsn: {
-        type: String,
-    },
-    batch: {
-        type: String,
-    },
     item: [PurchaseItemSchema],
     discount: {
         type: Number,
@@ -213,6 +216,9 @@ const PurchaseSchema = new mongoose.Schema({
         type: Number,
     },
     note: {
+        type: String,
+    },
+    terms: {
         type: String,
     },
     recipt: {
