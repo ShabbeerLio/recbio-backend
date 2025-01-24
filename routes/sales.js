@@ -16,7 +16,7 @@ router.get('/:adminId/getsalesentries', async (req, res) => {
     }
 });
 
-//  Route to add a sales entry
+// Route to add a sales entry and adjust purchase entry quantities
 router.post('/:adminId/addsalesentries', async (req, res) => {
     try {
         const admin = await Admin.findById(req.params.adminId);
@@ -25,9 +25,10 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items,discount,total, note, terms
+            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, total, note, terms
         } = req.body;
 
+        // Create the new sales entry
         const newSalesEntry = {
             name,
             bill,
@@ -50,10 +51,46 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
             terms,
         };
 
+        // Subtract quantities from purchase_entry items
+        for (const salesItem of items) {
+            const { name: salesItemName, quantity: salesQuantity } = salesItem;
+
+            // Find matching items in purchase_entry
+            let purchaseUpdated = false;
+            for (const purchaseEntry of admin.purchase_entry) {
+                for (const purchaseItem of purchaseEntry.item) {
+                    if (purchaseItem.name === salesItemName) {
+                        if (purchaseItem.quantity >= salesQuantity) {
+                            purchaseItem.quantity -= salesQuantity; // Subtract quantity
+                            purchaseUpdated = true;
+                            break;
+                        } else {
+                            return res.status(400).json({
+                                error: `Insufficient quantity for item: ${salesItemName} in purchase entries.`,
+                            });
+                        }
+                    }
+                }
+                if (purchaseUpdated) break;
+            }
+
+            if (!purchaseUpdated) {
+                return res.status(404).json({
+                    error: `Item: ${salesItemName} not found in purchase entries.`,
+                });
+            }
+        }
+
+        // Add the sales entry
         admin.sales_entry.push(newSalesEntry);
+
+        // Save the admin document
         await admin.save();
 
-        res.status(201).json({ message: "Sales entry added successfully", salesEntry: newSalesEntry });
+        res.status(201).json({
+            message: "Sales entry added successfully and purchase entry quantities updated",
+            salesEntry: newSalesEntry,
+        });
     } catch (error) {
         console.error("Error adding Sales entry:", error);
         res.status(500).json({ error: "Internal Server Error" });
