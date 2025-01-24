@@ -25,7 +25,7 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, total, note, terms
+            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, total,subtotal, note, terms
         } = req.body;
 
         // Create the new sales entry
@@ -47,6 +47,7 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
                 price
             })),
             discount,
+            subtotal,
             total,
             note,
             terms,
@@ -112,7 +113,7 @@ router.put('/:adminId/editsalesentries/:salesEntryId', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, total, note, terms
+            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, total,subtotal, note, terms
         } = req.body;
 
         // Update the purchase entry
@@ -125,6 +126,7 @@ router.put('/:adminId/editsalesentries/:salesEntryId', async (req, res) => {
         salesEntry.due_date = due_date || salesEntry.due_date;
         salesEntry.payment_type = payment_type || salesEntry.payment_type;
         salesEntry.discount = discount || salesEntry.discount;
+        salesEntry.subtotal = subtotal || salesEntry.subtotal;
         salesEntry.total = total || salesEntry.total;
         salesEntry.note = note || salesEntry.note;
         salesEntry.terms = terms || salesEntry.terms;
