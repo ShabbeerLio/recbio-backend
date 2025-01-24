@@ -38,9 +38,10 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
             bill_date,
             due_date,
             payment_type,
-            item: items.map(({ name, quantity, rate, tax, price }) => ({
+            item: items.map(({ name, quantity, free, rate, tax, price }) => ({
                 name,
                 quantity,
+                free,
                 rate,
                 tax,
                 price
@@ -53,15 +54,15 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
 
         // Subtract quantities from purchase_entry items
         for (const salesItem of items) {
-            const { name: salesItemName, quantity: salesQuantity } = salesItem;
+            const { name: salesItemName, quantity: salesQuantity, free: salesFree } = salesItem;
 
             // Find matching items in purchase_entry
             let purchaseUpdated = false;
             for (const purchaseEntry of admin.purchase_entry) {
                 for (const purchaseItem of purchaseEntry.item) {
                     if (purchaseItem.name === salesItemName) {
-                        if (purchaseItem.quantity >= salesQuantity) {
-                            purchaseItem.quantity -= salesQuantity; // Subtract quantity
+                        if (purchaseItem.quantity >= (salesQuantity + salesFree)) {
+                            purchaseItem.quantity -= (salesQuantity + salesFree); // Subtract quantity
                             purchaseUpdated = true;
                             break;
                         } else {
@@ -111,7 +112,7 @@ router.put('/:adminId/editsalesentries/:salesEntryId', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items,discount,total, note, terms
+            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, total, note, terms
         } = req.body;
 
         // Update the purchase entry
@@ -129,9 +130,10 @@ router.put('/:adminId/editsalesentries/:salesEntryId', async (req, res) => {
         salesEntry.terms = terms || salesEntry.terms;
 
         if (items) {
-            salesEntry.item = items.map(({ name, quantity, rate, tax, amount }) => ({
+            salesEntry.item = items.map(({ name, quantity, free, rate, tax, amount }) => ({
                 name,
                 quantity,
+                free,
                 rate,
                 tax,
                 amount

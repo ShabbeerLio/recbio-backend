@@ -144,6 +144,9 @@ const PurchaseItemSchema = new mongoose.Schema({
     quantity: {
         type: Number,
     },
+    free: {
+        type: Number,
+    },
     rate: {
         type: Number,
     },
