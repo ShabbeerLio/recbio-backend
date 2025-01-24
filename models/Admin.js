@@ -193,6 +193,9 @@ const SalesSchema = new mongoose.Schema({
     discount: {
         type: Number,
     },
+    discountedAmt: {
+        type: Number,
+    },
     subtotal: {
         type: Number,
     },
