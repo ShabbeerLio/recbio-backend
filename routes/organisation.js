@@ -24,11 +24,16 @@ router.post('/:adminId/addorganisation', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const { name, gst, location, state, street1, street2, city, zip_code } = req.body;
+        const { name,description,phone,mobile,invoice,dlnumber, gst, location, state, street1, street2, city, zip_code } = req.body;
 
         // Create new item
         const newItem = {
             name,
+            description,
+            phone,
+            mobile,
+            invoice,
+            dlnumber,
             gst,
             location,
             state,
@@ -56,7 +61,7 @@ router.put('/:adminId/editorganisation/:itemId', async (req, res) => {
             return res.status(404).json({ error: "Admin not found" });
         }
 
-        const {name, gst, location, state, street1, street2, city, zip_code  } = req.body;
+        const {name,description, gst,phone,mobile,invoice,dlnumber, location, state, street1, street2, city, zip_code  } = req.body;
 
         const item = admin.organisation.find((i) => i._id.toString() === req.params.itemId);
         if (!item) {
@@ -65,6 +70,11 @@ router.put('/:adminId/editorganisation/:itemId', async (req, res) => {
 
         // Update item fields if provided
         item.name = name || item.name;
+        item.description = description || item.description;
+        item.phone = phone || item.phone;
+        item.mobile = mobile || item.mobile;
+        item.invoice = invoice || item.invoice;
+        item.dlnumber = dlnumber || item.dlnumber;
         item.location = location || item.location;
         item.state = state || item.state;
         item.street1 = street1 || item.street1;

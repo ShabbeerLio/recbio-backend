@@ -6,6 +6,21 @@ const organisationSchema = new mongoose.Schema({
     name: {
         type: String,
     },
+    description: {
+        type: String,
+    },
+    phone: {
+        type: Number,
+    },
+    mobile: {
+        type: Number,
+    },
+    invoice: {
+        type: String,
+    },
+    dlnumber: {
+        type: String,
+    },
     gst: {
         type: String,
     },
