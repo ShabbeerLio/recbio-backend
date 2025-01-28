@@ -134,13 +134,13 @@ router.put('/:adminId/editsalesentries/:salesEntryId', async (req, res) => {
         salesEntry.terms = terms || salesEntry.terms;
 
         if (items) {
-            salesEntry.item = items.map(({ name, quantity, free, rate, tax, amount }) => ({
+            salesEntry.item = items.map(({ name, quantity, free, rate, tax, price }) => ({
                 name,
                 quantity,
                 free,
                 rate,
                 tax,
-                amount
+                price
             }));
         }
 
