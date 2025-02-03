@@ -16,6 +16,7 @@ router.get('/:adminId/getpurchaseentries', async (req, res) => {
     }
 });
 
+// Route to add a purchase entry and auto-generate the bill number
 router.post('/:adminId/addpurchaseentry', async (req, res) => {
     try {
         const admin = await Admin.findById(req.params.adminId);
@@ -24,12 +25,16 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, bill_date, due_date, payment_type, invoice_number, items, discount, total, note,terms, recipt
+            name, order_number, bill_date, due_date, payment_type, invoice_number, items, discount, total, note, terms, recipt
         } = req.body;
 
+        // Generate the purchase bill number with the "PE" prefix
+        const billNumber = `#PE${admin.purchase_bill_counter.toString().padStart(6, '0')}`;  // Bill number like #PE000001
+
+        // Create the new purchase entry
         const newPurchaseEntry = {
             name,
-            bill,
+            bill: billNumber,  // Use generated bill number
             order_number,
             bill_date,
             due_date,
@@ -51,10 +56,19 @@ router.post('/:adminId/addpurchaseentry', async (req, res) => {
             recipt,
         };
 
+        // Add the purchase entry
         admin.purchase_entry.push(newPurchaseEntry);
+
+        // Increment the purchase bill counter for the next purchase entry
+        admin.purchase_bill_counter += 1;
+
+        // Save the admin document
         await admin.save();
 
-        res.status(201).json({ message: "Purchase entry added successfully", purchaseEntry: newPurchaseEntry });
+        res.status(201).json({
+            message: "Purchase entry added successfully",
+            purchaseEntry: newPurchaseEntry,
+        });
     } catch (error) {
         console.error("Error adding purchase entry:", error);
         res.status(500).json({ error: "Internal Server Error" });

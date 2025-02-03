@@ -15,7 +15,6 @@ router.get('/:adminId/getsalesentries', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
 // Route to add a sales entry and adjust purchase entry quantities
 router.post('/:adminId/addsalesentries', async (req, res) => {
     try {
@@ -25,13 +24,16 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
         }
 
         const {
-            name, bill, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount,discountedAmt, total,subtotal, note, terms
+            name, order_number, invoice_number, salesperson, bill_date, due_date, payment_type, items, discount, discountedAmt, total, subtotal, note, terms
         } = req.body;
+
+        // Generate the bill number
+        const billNumber = `#SE${admin.bill_counter.toString().padStart(6, '0')}`;  // Bill number like #000001
 
         // Create the new sales entry
         const newSalesEntry = {
             name,
-            bill,
+            bill: billNumber,  // Use generated bill number
             order_number,
             invoice_number,
             salesperson,
@@ -86,6 +88,9 @@ router.post('/:adminId/addsalesentries', async (req, res) => {
 
         // Add the sales entry
         admin.sales_entry.push(newSalesEntry);
+
+        // Increment the bill counter for the next sales entry
+        admin.bill_counter += 1;
 
         // Save the admin document
         await admin.save();
